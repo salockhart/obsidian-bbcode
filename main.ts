@@ -7,7 +7,7 @@ export default class BBCode extends Plugin {
 		this.addCommand({
 			id: "copy-to-bbcode",
 			name: "Convert to BBCode & Copy to Clipboard",
-			editorCallback: (editor, view) => {
+			editorCallback: (editor) => {
 				const value = editor.getValue();
 				const tagless = value.replace(
 					/\[\[((.*?)\|)*?([^|]*?)\]\]/g,
