@@ -12,8 +12,8 @@ function pbcopy(data: string) {
 export default class BBCode extends Plugin {
 	async onload() {
 		this.addCommand({
-			id: "convert-to-bbcode",
-			name: "Convert to BBCode",
+			id: "copy-to-bbcode",
+			name: "Convert to BBCode & Copy to Clipboard",
 			editorCallback: (editor, view) => {
 				const value = editor.getValue();
 				const tagless = value.replace(
