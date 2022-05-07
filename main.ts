@@ -14,11 +14,11 @@ export default class BBCode extends Plugin {
 					"$3"
 				);
 
-				navigator.clipboard.writeText(
-					marked(tagless, {
-						renderer: new md2bbc(),
-					})
-				);
+				const bbcode = marked(tagless, {
+					renderer: new md2bbc(),
+				});
+
+				navigator.clipboard.writeText(bbcode);
 			},
 		});
 	}
