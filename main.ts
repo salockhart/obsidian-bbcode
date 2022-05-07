@@ -1,6 +1,13 @@
+import * as child_process from "child_process";
 import { marked } from "marked";
 import md2bbc from "md2bbc";
 import { Plugin } from "obsidian";
+
+function pbcopy(data: string) {
+	const proc = child_process.spawn("pbcopy");
+	proc.stdin.write(data);
+	proc.stdin.end();
+}
 
 export default class BBCode extends Plugin {
 	async onload() {
@@ -13,7 +20,7 @@ export default class BBCode extends Plugin {
 					/\[\[((.*?)\|)*?([^|]*?)\]\]/g,
 					"$3"
 				);
-				console.log(
+				pbcopy(
 					marked(tagless, {
 						renderer: new md2bbc(),
 					})
