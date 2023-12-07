@@ -1,25 +1,34 @@
-import { marked } from "marked";
-import md2bbc from "md2bbc";
 import { Plugin } from "obsidian";
+import { CopyBbcodeCommand } from "src/CopyBbcodeCommand";
+import { CopyBbcodeSettingTab } from "src/CopyBbcodeSettingTab";
 
-export default class BBCode extends Plugin {
+interface PluginSettings {
+	containerTemplate: string;
+}
+
+const DEFAULT_SETTINGS: Partial<PluginSettings> = {
+	containerTemplate: "{note}",
+};
+
+export default class BBCodePlugin extends Plugin {
+	settings: PluginSettings;
+
 	async onload() {
-		this.addCommand({
-			id: "copy-to-bbcode",
-			name: "Convert to BBCode & Copy to Clipboard",
-			editorCallback: (editor) => {
-				const value = editor.getValue();
-				const tagless = value.replace(
-					/\[\[((.*?)\|)*?([^|]*?)\]\]/g,
-					"$3"
-				);
+		await this.loadSettings();
 
-				const bbcode = marked(tagless, {
-					renderer: new md2bbc(),
-				});
+		this.addSettingTab(new CopyBbcodeSettingTab(this.app, this));
+		this.addCommand(new CopyBbcodeCommand(this));
+	}
 
-				navigator.clipboard.writeText(bbcode);
-			},
-		});
+	async loadSettings() {
+		this.settings = Object.assign(
+			{},
+			DEFAULT_SETTINGS,
+			await this.loadData()
+		);
+	}
+
+	async saveSettings() {
+		await this.saveData(this.settings);
 	}
 }
