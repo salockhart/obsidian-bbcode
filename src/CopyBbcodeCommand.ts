@@ -14,7 +14,10 @@ export class CopyBbcodeCommand implements Command {
 	}
 
 	editorCallback(editor: Editor) {
-		const value = editor.getValue();
+		const value = editor.somethingSelected()
+			? editor.getSelection()
+			: editor.getValue();
+
 		const tagless = value.replace(/\[\[((.*?)\|)*?([^|]*?)\]\]/g, "$3");
 
 		const bbcode = marked(tagless, {
