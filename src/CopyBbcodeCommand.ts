@@ -1,7 +1,8 @@
 import type BBCodePlugin from "main";
 import { marked } from "marked";
 import md2bbc from "md2bbc";
-import { Command, Editor } from "obsidian";
+import { Command, Editor, MarkdownView } from "obsidian";
+import { DEFAULT_TEMPLATE } from "./utils/constants";
 
 export class CopyBbcodeCommand implements Command {
 	id = "copy-to-bbcode";
@@ -13,22 +14,29 @@ export class CopyBbcodeCommand implements Command {
 		this.plugin = plugin;
 	}
 
-	editorCallback(editor: Editor) {
-		const value = editor.somethingSelected()
-			? editor.getSelection()
-			: editor.getValue();
-
+	editorCallback(editor: Editor, view: MarkdownView) {
+		const value = this.getValue(editor);
 		const tagless = value.replace(/\[\[((.*?)\|)*?([^|]*?)\]\]/g, "$3");
-
-		const bbcode = marked(tagless, {
-			renderer: new md2bbc(),
-		});
-
-		const templatedBbcode = this.plugin.settings.containerTemplate.replace(
-			"{note}",
+		const bbcode = marked(tagless, { renderer: new md2bbc() });
+		const templatedBbcode = this.findTemplate(view.file.path).replace(
+			DEFAULT_TEMPLATE,
 			bbcode
 		);
-
 		navigator.clipboard.writeText(templatedBbcode);
+	}
+
+	private getValue(editor: Editor) {
+		return editor.somethingSelected()
+			? editor.getSelection()
+			: editor.getValue();
+	}
+
+	private findTemplate(path: string) {
+		const template =
+			this.plugin.settings.customTemplates.find((template) =>
+				path.startsWith(template.pattern)
+			)?.template ?? this.plugin.settings.containerTemplate;
+
+		return template === "" ? DEFAULT_TEMPLATE : template;
 	}
 }

@@ -6,3 +6,30 @@ available in the app when your plugin is enabled.
 If your plugin does not need CSS, delete this file.
 
 */
+.bbcode-settings .relative {
+	position: relative;
+}
+
+.bbcode-settings .absolute {
+	position: absolute;
+}
+
+.bbcode-settings .hidden {
+	display: none;
+}
+
+.bbcode-settings .min-h-40 {
+	min-height: 10rem; /* 160px */
+}
+
+.bbcode-settings .w-full {
+	width: 100%;
+}
+
+.bbcode-settings .top-3 {
+	top: 0.75rem; /* 12px */
+}
+
+.bbcode-settings .right-3 {
+	right: 0.75rem; /* 12px */
+}
