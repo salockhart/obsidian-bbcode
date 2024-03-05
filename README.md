@@ -10,6 +10,7 @@ Converts your Markdown files to BBCode, for pasting into forums
 4. Build with `npm run dev`
 5. When you're all done, commit your changes.
 6. Version your changes with `npm version [major|minor|patch]`
+7. Push the new version with `git push --tags`
 
 #### Usage
 
