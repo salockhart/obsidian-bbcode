@@ -1,17 +1,20 @@
 import { Plugin } from "obsidian";
 import { CopyBbcodeCommand } from "src/CopyBbcodeCommand";
 import { CopyBbcodeSettingTab } from "src/CopyBbcodeSettingTab";
+import { DEFAULT_TEMPLATE } from "src/utils/constants";
 
 interface PluginSettings {
 	containerTemplate: string;
+	customTemplates: { pattern: string; template: string }[];
 }
 
 const DEFAULT_SETTINGS: Partial<PluginSettings> = {
-	containerTemplate: "{note}",
+	containerTemplate: DEFAULT_TEMPLATE,
+	customTemplates: [],
 };
 
 export default class BBCodePlugin extends Plugin {
-	settings: PluginSettings;
+	settings!: PluginSettings;
 
 	async onload() {
 		await this.loadSettings();
