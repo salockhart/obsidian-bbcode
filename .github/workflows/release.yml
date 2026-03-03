@@ -1,9 +1,16 @@
 name: Release Obsidian plugin
 
 on:
-    push:
-        tags:
-            - "*"
+    workflow_dispatch:
+        inputs:
+            version:
+                description: "Version bump type"
+                required: true
+                type: choice
+                options:
+                    - patch
+                    - minor
+                    - major
 
 jobs:
     build:
@@ -25,13 +32,27 @@ jobs:
                   npm install
                   npm run build
 
+            - name: Configure git
+              run: |
+                  git config user.name "github-actions[bot]"
+                  git config user.email "github-actions[bot]@users.noreply.github.com"
+
+            - name: Bump version
+              env:
+                  VERSION: ${{ github.event.inputs.version }}
+              run: |
+                  tag=$(npm version "$VERSION")
+                  echo "TAG=$tag" >> $GITHUB_ENV
+
+            - name: Push commit and tag
+              run: git push && git push --tags
+
             - name: Create release
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
-                  tag="${GITHUB_REF#refs/tags/}"
-
-                  gh release create "$tag" \
-                    --title="$tag" \
+                  gh release create "$TAG" \
+                    --title="$TAG" \
+                    --generate-notes \
                     --draft \
                     main.js manifest.json styles.css
