@@ -66,6 +66,10 @@ export class CopyBbcodeCommand implements Command {
 	}
 
 	private toBBCode(value: string) {
-		return marked(value, { renderer: new md2bbc() });
+		const renderer = new md2bbc();
+		if (!this.plugin.settings.wrapParagraphsInDiv) {
+			renderer.paragraph = (text: string) => text + "\n";
+		}
+		return marked(value, { renderer });
 	}
 }
