@@ -3,16 +3,20 @@ import { CopyBbcodeCommand } from "src/CopyBbcodeCommand";
 import { CopyBbcodeSettingTab } from "src/CopyBbcodeSettingTab";
 import { DEFAULT_TEMPLATE } from "src/utils/constants";
 
+export type ListStyle = "html" | "star";
+
 interface PluginSettings {
 	containerTemplate: string;
 	customTemplates: { pattern: string; template: string }[];
 	wrapParagraphsInDiv: boolean;
+	listStyle: ListStyle;
 }
 
 const DEFAULT_SETTINGS: Partial<PluginSettings> = {
 	containerTemplate: DEFAULT_TEMPLATE,
 	customTemplates: [],
 	wrapParagraphsInDiv: true,
+	listStyle: "html",
 };
 
 export default class BBCodePlugin extends Plugin {
