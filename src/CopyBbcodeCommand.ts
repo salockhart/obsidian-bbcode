@@ -70,6 +70,13 @@ export class CopyBbcodeCommand implements Command {
 		if (!this.plugin.settings.wrapParagraphsInDiv) {
 			renderer.paragraph = (text: string) => text + "\n";
 		}
+		if (this.plugin.settings.listStyle === "star") {
+			renderer.list = (body: string, ordered: boolean) => {
+				const openTag = ordered ? "LIST=1" : "LIST";
+				return `[${openTag}]\n${body}[/LIST]\n`;
+			};
+			renderer.listitem = (text: string) => `[*]${text}\n`;
+		}
 		return marked(value, { renderer });
 	}
 }

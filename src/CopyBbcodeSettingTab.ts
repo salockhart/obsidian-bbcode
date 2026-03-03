@@ -1,4 +1,5 @@
 import type BBCodePlugin from "main";
+import type { ListStyle } from "main";
 import { App, PluginSettingTab, Setting } from "obsidian";
 import { addFullWidthTextBox } from "./settings/FullWidthTextBox";
 import { DEFAULT_TEMPLATE } from "./utils/constants";
@@ -66,6 +67,24 @@ export class CopyBbcodeSettingTab extends PluginSettingTab {
 							await this.saveSettings();
 						})
 				)
+			);
+
+		new Setting(containerEl)
+			.setName("List Style")
+			.setDesc(
+				"Choose how bullet and numbered lists are converted. " +
+					'"HTML-style" uses [ul]/[ol] + [li] tags. ' +
+					'"Star-style" uses [LIST]/[LIST=1] + [*] tags (e.g. Tom\'s Hardware).'
+			)
+			.addDropdown((dropdown) =>
+				dropdown
+					.addOption("html", "HTML-style ([ul]/[ol] + [li])")
+					.addOption("star", "Star-style ([LIST] + [*])")
+					.setValue(this.plugin.settings.listStyle)
+					.onChange(async (value) => {
+						this.plugin.settings.listStyle = value as ListStyle;
+						await this.saveSettings();
+					})
 			);
 
 		new Setting(containerEl)
