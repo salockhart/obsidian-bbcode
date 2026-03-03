@@ -6,11 +6,13 @@ import { DEFAULT_TEMPLATE } from "src/utils/constants";
 interface PluginSettings {
 	containerTemplate: string;
 	customTemplates: { pattern: string; template: string }[];
+	wrapParagraphsInDiv: boolean;
 }
 
 const DEFAULT_SETTINGS: Partial<PluginSettings> = {
 	containerTemplate: DEFAULT_TEMPLATE,
 	customTemplates: [],
+	wrapParagraphsInDiv: true,
 };
 
 export default class BBCodePlugin extends Plugin {

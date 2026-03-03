@@ -35,6 +35,21 @@ export class CopyBbcodeSettingTab extends PluginSettingTab {
 		containerEl.addClass("bbcode-settings");
 
 		new Setting(containerEl)
+			.setName("Wrap paragraphs in [div]")
+			.setDesc(
+				"When enabled, each paragraph will be wrapped in [div]...[/div] tags. " +
+					"Disable this if your forum does not support [div] tags."
+			)
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.wrapParagraphsInDiv)
+					.onChange(async (value) => {
+						this.plugin.settings.wrapParagraphsInDiv = value;
+						await this.saveSettings();
+					})
+			);
+
+		new Setting(containerEl)
 			.setName("Container Template")
 			.setDesc(
 				`Provide a template to wrap all converted notes with. Any occurrence ` +
