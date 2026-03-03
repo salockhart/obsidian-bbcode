@@ -9,8 +9,16 @@ Converts your Markdown files to BBCode, for pasting into forums
 3. Link this directory to the test vault's `.obsidian/plugins` directory: `ln -s `pwd` Test\ Vault/.obsidian/plugins/obsidian-bbcode`.
 4. Build with `npm run dev`
 5. When you're all done, commit your changes.
-6. Version your changes with `npm version [major|minor|patch]`
-7. Push the new version with `git push --tags`
+
+#### Releasing a New Version
+
+Releases are handled by the **Release Obsidian plugin** GitHub Actions workflow. To cut a release:
+
+1. Go to **Actions → Release Obsidian plugin → Run workflow** on GitHub.
+2. Choose a bump type from the dropdown: `patch`, `minor`, or `major`.
+3. Click **Run workflow**.
+
+The workflow will run `npm version`, push the commit and tag, and create a draft GitHub release with the built assets attached. Publish the draft when you're ready.
 
 #### Usage
 
